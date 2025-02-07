@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribers - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the URL contains ?debug=true
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDebug = urlParams.get('debug') === 'true';
+
+      if (isDebug) {
+          // Add a class to <body> to activate debug borders
+          document.body.classList.add("debug-active");
+      }
+    });
+    </script>
+    <style>
+        .debug-border {
+          border: 2px solid transparent !important; /* Initially hidden */
+        }
+
+        .debug-active .debug-border {
+          border: 2px solid red !important; /* Becomes visible when debug mode is active */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            padding: 20px;
+        }
+        .subscribers-header {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        @media (min-width: 768px) {
+            .subscribers-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        .subscribers-header h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filters button {
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: var(--gray-200);
+        }
+        .filters button.active {
+            background-color: var(--green-500);
+            color: white;
+        }
+        .table-container {
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            border: 1px solid var(--gray-400);
+            padding: 8px;
+            white-space: nowrap;
+        }
+        th {
+            background-color: var(--gray-300);
+        }
+        @media (max-width:768px){
+          .content{
+            margin:0px;
+          }
+          .button-container{
+            display:flex;
+            flex-direction: column;
+          }
+          .button-container button{
+            margin:10px;
+          }
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+
+        .custom-multiselect {
+          display: none;
+            margin-bottom: 20px;
+            font-family: system-ui;
+            width: 300px;
+            position: absolute;
+            left: 150px;
+            background: white;
+            padding: 10px;
+        }
+
+        .custom-multiselect label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            padding: 8px;
+            background-color: white;
+            min-height: 40px;
+        }
+
+        .tags-container .tag {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tags-container .tag i {
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .dropdown {
+            position: relative;
+            margin-top: 5px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            background-color: white;
+            max-height: 150px; /* Limit dropdown height */
+            overflow-y: auto; /* Enable scrolling if content exceeds height */
+            padding: 10px;
+        }
+
+        .dropdown-content label {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: 300;
+        }
+
+        .dropdown-content label:hover {
+            background-color: var(--gray-200);
+        }
+
+        .dropdown-content input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="active debug-border">SUBSCRIBERS</a>
+            <a href="index.html" class="debug-border">INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="content">
+        <div class="subscribers-header">
+            <div>
+              <h2>Subscribers</h2>
+              <input type="text" placeholder="Search Subscriber..." /><button><i class="fa fa-search"></i></button>
+            </div>
+            <div class="filters">
+                <button class="active">Subscribed</button>
+                <button>Pending verification</button>
+                <button>Unsubscribed</button>
+            </div>
+            <div>
+                <button onclick="window.location.href='create-list.html';"  type="button"  class="button-primary debug-border"  onclick="window.location.href='create-list.html';">Create new list</button>
+                <button class="button-primary debug-border" onclick="window.location.href='create-subscriber.html';">Add Subscriber</button>
+                <button class="button-primary debug-border" onclick="window.location.href='upload-subscribers.html';">Upload File</button>
+            </div>
+        </div>
+        <div class="button-container">
+           <button onclick="window.location.href='edit-subscriber.html';" class="button debug-border"><i class="fa fa-edit"></i> Edit</button>
+           <button class="button"><i class="fa fa-trash"></i> Delete</button>
+           <button class="button debug-border" id="togglebutton"><i class="fa fa-folder"></i> Add to list</button>
+           <button class="button">Choose which columns to display</button>
+           <div class="custom-multiselect debug-border">
+               <label for="select-list">Select List</label>
+               <div class="tags-container" id="tags-list"></div>
+               <div class="dropdown">
+                   <div class="dropdown-content" id="dropdown-list">
+                       <label><input type="checkbox" value="List 1"> List 1</label>
+                       <label><input type="checkbox" value="List 2"> List 2</label>
+                       <label><input type="checkbox" value="List 3"> List 3</label>
+                       <label><input type="checkbox" value="List 4"> List 4</label>
+                       <label><input type="checkbox" value="List 5"> List 5</label>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <script>
+       document.addEventListener('DOMContentLoaded', () => {
+         const setupMultiSelect = (dropdownId, tagsContainerId) => {
+             const dropdown = document.getElementById(dropdownId);
+             const tagsContainer = document.getElementById(tagsContainerId);
+
+             dropdown.addEventListener('change', (event) => {
+                 const checkbox = event.target;
+                 const value = checkbox.value;
+
+                 if (checkbox.checked) {
+                     // Add tag
+                     const tag = document.createElement('div');
+                     tag.classList.add('tag');
+                     tag.textContent = value;
+
+                     const removeIcon = document.createElement('i');
+                     removeIcon.classList.add('fa', 'fa-times');
+                     removeIcon.addEventListener('click', () => {
+                         // Remove tag and uncheck the checkbox
+                         tag.remove();
+                         checkbox.checked = false;
+                     });
+
+                     tag.appendChild(removeIcon);
+                     tagsContainer.appendChild(tag);
+                 } else {
+                     // Remove tag
+                     const existingTag = [...tagsContainer.children].find(
+                         (tag) => tag.textContent.trim() === value
+                     );
+                     if (existingTag) existingTag.remove();
+                 }
+
+
+             });
+         };
+
+         // Initialize both custom select fields
+         setupMultiSelect('dropdown-list', 'tags-list');
+
+         document.getElementById("togglebutton").addEventListener("click", function(event) {
+            event.stopPropagation();
+            let multiSelect = document.querySelector(".custom-multiselect");
+            multiSelect.style.display = "block";
+        });
+
+        document.addEventListener("click", function(event) {
+            let multiSelect = document.querySelector(".custom-multiselect");
+            if (!multiSelect.contains(event.target) && event.target.id !== "toggleButton") {
+                multiSelect.style.display = "none";
+            }
+        });
+     });
+       </script>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="sel-all"> <label for="sel-all">Select All</label></th>
+                        <th>Mobile #</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>City</th>
+                        <th>Zip code</th>
+                        <th>Gender</th>
+                        <th>DOB</th>
+                        <th>Source</th>
+                        <th>Custom 1</th>
+                        <th>Custom 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>848 555 44 32</td>
+                        <td>Dave</td>
+                        <td>Jones</td>
+                        <td>test@test.com</td>
+                        <td>New York</td>
+                        <td>98773</td>
+                        <td>Male</td>
+                        <td>04/02/1988</td>
+                        <td>CRM</td>
+                        <td>Custom Data 1</td>
+                        <td>Custom Data 2</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>848 555 44 32</td>
+                        <td>Test</td>
+                        <td>Test 2</td>
+                        <td>test@test.com</td>
+                        <td>New York</td>
+                        <td>98773</td>
+                        <td>Male</td>
+                        <td>04/02/1988</td>
+                        <td>CRM</td>
+                        <td>Custom Data 1</td>
+                        <td>Custom Data 2</td>
+                    </tr>
+                    <!-- Additional rows can be added here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          // Check if the URL contains ?debug=true
+          const urlParams = new URLSearchParams(window.location.search);
+          const isDebug = urlParams.get('debug') === 'true';
+
+          if (isDebug) {
+              // Add a class to <body> to activate debug borders
+              document.body.classList.add("debug-active");
+          }
+        });
+    </script>
+        <style>
+            .debug-border {
+              border: 2px solid transparent !important; /* Initially hidden */
+            }
+
+            .debug-active .debug-border {
+              border: 2px solid red !important; /* Becomes visible when debug mode is active */
+            }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+        }
+        .section {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--gray-100);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+        .section h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+        }
+        .section p {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .prepay-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .prepay-buttons button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--blue-500);
+            color: white;
+            cursor: pointer;
+        }
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .payment-history {
+            margin-top: 15px;
+        }
+        .button.secondary {
+            background-color: var(--gray-300);
+            color: var(--blue-800);
+        }
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .section {
+                width: 48%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html" class="debug-border" >INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999</span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="content">
+        <section class="section">
+            <h2>Credits</h2>
+            <p>Current amount: <span style="color: var(--red-500);">9,999</span></p>
+            <div class="prepay-buttons">
+                <button>100k</button>
+                <button>500k</button>
+                <button>1 million</button>
+                <button>Custom amount</button>
+            </div>
+        </section>
+        <section class="section">
+            <h2>Payment Info</h2>
+            <div class="payment-info">
+                <input type="text" placeholder="2334 2245 2222 4555">
+                <input type="text" placeholder="08/29">
+                <input type="text" placeholder="CVV">
+                <input type="text" placeholder="Card holder address, city, state, Zip">
+                <div class="payment-history">
+                    <h3>Payment History</h3>
+                    <ul>
+                        <li>04/22/2022 - Payment</li>
+                        <li>04/26/2022 - Payment</li>
+                        <li>04/29/2022 - Payment</li>
+                    </ul>
+                    <button class="button secondary">View all...</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

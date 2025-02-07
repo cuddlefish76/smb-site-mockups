@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updated SMB Mockup Home with Scroll</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            gap: 15px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin: 20px;
+        }
+        .card {
+            background-color: var(--gray-200);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid var(--gray-400);
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            font-weight: bold;
+        }
+        .scrollable {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 style="color: var(--gray-100); margin: 0;">HOME</h1>
+        <nav class="menu">
+            <a href="#" class="active">HOME</a>
+            <a href="#">REPORTS</a>
+            <a href="#">CAMPAIGNS</a>
+            <a href="#">COOL TOOLS</a>
+            <a href="#">SUBSCRIBERS</a>
+            <a href="#">INBOX</a>
+        </nav>
+        <div style="color: var(--gray-100);">Credits: <span style="color: var(--red-500);">9,999</span></div>
+    </header>
+
+    <main class="content">
+        <div class="card">
+            <h2>Delivery stats</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Queued</th>
+                        <th>Injected</th>
+                        <th>Delivered</th>
+                        <th>Removed</th>
+                        <th>Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10,223</td>
+                        <td>10,198</td>
+                        <td>10,087</td>
+                        <td>56</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>71,252</td>
+                        <td>70,198</td>
+                        <td>70,087</td>
+                        <td>253</td>
+                        <td>12</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Subscribers</h2>
+            <p>Active: 99,372</p>
+            <p>Total: 459,372</p>
+        </div>
+
+        <div class="card scrollable">
+            <h2>Campaigns</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Campaign</th>
+                        <th>Delivered</th>
+                        <th>Removed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Diet pills - 100k a day</td>
+                        <td>10,087</td>
+                        <td>56</td>
+                    </tr>
+                    <tr>
+                        <td>Haircut reminder</td>
+                        <td>70,087</td>
+                        <td>253</td>
+                    </tr>
+                    <tr>
+                        <td>Legacy drop - Nov01</td>
+                        <td>8,057</td>
+                        <td>2,233</td>
+                    </tr>
+                    <tr>
+                        <td>Legacy drop - Oct13</td>
+                        <td>60,457</td>
+                        <td>56</td>
+                    </tr>
+                    <tr>
+                        <td>Legacy drop - Oct01</td>
+                        <td>45,000</td>
+                        <td>120</td>
+                    </tr>
+                    <tr>
+                        <td>Newsletter Campaign</td>
+                        <td>30,000</td>
+                        <td>80</td>
+                    </tr>
+                    <tr>
+                        <td>Product Launch</td>
+                        <td>20,000</td>
+                        <td>50</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Create a Campaign</h2>
+            <form>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" class="field-input" placeholder="Name..." style="width: 100%;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <select class="field-input" style="width: 100%;">
+                        <option>List</option>
+                    </select>
+                </div>
+                <button type="submit" class="button-primary" style="width: 100%;">+</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

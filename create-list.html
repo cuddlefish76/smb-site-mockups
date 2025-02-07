@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create List - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          // Check if the URL contains ?debug=true
+          const urlParams = new URLSearchParams(window.location.search);
+          const isDebug = urlParams.get('debug') === 'true';
+
+          if (isDebug) {
+              // Add a class to <body> to activate debug borders
+              document.body.classList.add("debug-active");
+          }
+        });
+    </script>
+        <style>
+            .debug-border {
+              border: 2px solid transparent !important; /* Initially hidden */
+            }
+
+            .debug-active .debug-border {
+              border: 2px solid red !important; /* Becomes visible when debug mode is active */
+            }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content h2 {
+            font-size: 1.8em;
+            color: var(--blue-800);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .field input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .table-container th, .table-container td {
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .table-container th {
+            background-color: var(--gray-300);
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .actions button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 10px;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .actions button {
+                width: 100%;
+            }
+
+            .table-container th, .table-container td {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+
+            .table-container table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="active debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html"  class="debug-border">INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999</span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="content">
+        <h2>Create List</h2>
+        <div class="field">
+            <label for="list-name">Name</label>
+            <div class="actions" style="justify-content: flex-start;">
+            <input type="text" id="list-name" placeholder="Enter name" style="width: 250px;">
+              <button><i class="fa fa-file"></i> Save</button>
+          </div>
+        </div>
+        <div class="field">
+            <label>Select Subscribers</label>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Mobile #</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                            <th>City</th>
+                            <th>Zip code</th>
+                            <th>Gender</th>
+                            <th>DOB</th>
+                            <th>Source</th>
+                            <th>Custom 1</th>
+                            <th>Custom 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>848 555 44 32</td>
+                            <td>Dave</td>
+                            <td>Jones</td>
+                            <td>test@test.com</td>
+                            <td>New York</td>
+                            <td>98773</td>
+                            <td>Male</td>
+                            <td>04/02/1988</td>
+                            <td>Source</td>
+                            <td>Custom 1</td>
+                            <td>Custom 2</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>848 555 44 33</td>
+                            <td>Jane</td>
+                            <td>Smith</td>
+                            <td>jane@test.com</td>
+                            <td>Los Angeles</td>
+                            <td>90001</td>
+                            <td>Female</td>
+                            <td>12/15/1990</td>
+                            <td>Source</td>
+                            <td>Custom 1</td>
+                            <td>Custom 2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="actions">
+            <button>Create List</button>
+        </div>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

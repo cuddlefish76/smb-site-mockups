@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          // Check if the URL contains ?debug=true
+          const urlParams = new URLSearchParams(window.location.search);
+          const isDebug = urlParams.get('debug') === 'true';
+
+          if (isDebug) {
+              // Add a class to <body> to activate debug borders
+              document.body.classList.add("debug-active");
+          }
+        });
+    </script>
+        <style>
+            .debug-border {
+              border: 2px solid transparent !important; /* Initially hidden */
+            }
+
+            .debug-active .debug-border {
+              border: 2px solid red !important; /* Becomes visible when debug mode is active */
+            }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+        }
+        .keyword-section {
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 50%;
+        }
+        .qr-code-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 50%;
+        }
+        .qr-code {
+            background-color: white;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+        }
+        .keyword-section h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .actions button {
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: var(--text-base);
+        }
+        .edit-button {
+            background-color: var(--blue-500);
+            color: white;
+        }
+        .save-button {
+            background-color: var(--green-500);
+            color: white;
+        }
+        @media (max-width: 768px) {
+           .content {
+             margin:0px;
+             padding:0px;
+           }
+           .keyword-section,.qr-code-section{
+             width: auto;
+           }
+         }
+
+         .container {
+                   display: flex;
+                   height: 100vh;
+                   gap: 10px;
+                   padding: 10px;
+               }
+        /* Left Panel - Message List */
+        .sidebar {
+            width: 25%;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h3 {
+            margin-bottom: 10px;
+        }
+        .message-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .message-item {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .message-item:hover, .message-item.active {
+            background: #d3d3d3;
+            border-radius: 5px;
+        }
+        .message-controls {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .control-btn {
+            padding: 6px 10px;
+            background: #ddd;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .control-btn:hover {
+            background: #bbb;
+        }
+
+        /* Middle Panel - Chat */
+        .chat-window {
+            width: 50%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .chat-box {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .chat-bubble {
+            background: #e0e0e0;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+        .input-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+        }
+        .input-area input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .send-btn {
+            padding: 8px 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .send-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Right Panel - Contact Details */
+        .contact-details {
+            width: 25%;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .contact-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .contact-info {
+            font-size: 14px;
+            color: gray;
+            margin-bottom: 15px;
+        }
+        .list-assignment {
+            margin-bottom: 10px;
+        }
+        .list-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .tag {
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        .contact-fields {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="#" class="active debug-border" >INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="content">
+      <div class="container">
+          <!-- Left Panel: Message List -->
+          <div class="sidebar">
+              <h3>Inbox</h3>
+              <div class="message-controls">
+                  <button class="control-btn">Mark as unread</button>
+                  <button class="control-btn">Archive</button>
+                  <button class="control-btn">Delete</button>
+                  <button class="control-btn">Add to list</button>
+              </div>
+              <div class="message-list">
+                  <div class="message-item active" onclick="selectMessage(this)">Andy 787-555-3422</div>
+                  <div class="message-item" onclick="selectMessage(this)">Andy 787-555-3422</div>
+                  <div class="message-item" onclick="selectMessage(this)">Andy 787-555-3422</div>
+                  <div class="message-item" onclick="selectMessage(this)">Andy 787-555-3422</div>
+                  <div class="message-item" onclick="selectMessage(this)">Andy 787-555-3422</div>
+                  <div class="message-item" onclick="selectMessage(this)">Andy 787-555-3422</div>
+              </div>
+          </div>
+
+          <!-- Middle Panel: Chat Window -->
+          <div class="chat-window">
+              <div class="chat-box">
+                  <div class="chat-bubble">
+                      Hi Andy, welcome back to messaging. Click here [link]. Reply STOP to cancel.
+                  </div>
+              </div>
+              <div class="input-area">
+                  <input type="text" placeholder="Type your message...">
+                  <button class="send-btn">Send</button>
+              </div>
+          </div>
+
+          <!-- Right Panel: Contact Details -->
+          <div class="contact-details">
+              <div class="contact-name">Andy Jones</div>
+              <div class="contact-info">787-555-3422</div>
+
+              <div class="list-assignment">
+                  <strong>List assignment</strong>
+                  <div class="list-tags">
+                      <span class="tag">List_2</span>
+                      <span class="tag">List_32</span>
+                  </div>
+              </div>
+
+              <div class="contact-fields">
+                  <strong>Contact details:</strong>
+                  <p>Number</p>
+                  <p>First Name</p>
+                  <p>Last Name</p>
+                  <p>Email</p>
+                  <p>City</p>
+                  <p>Zip Code</p>
+                  <p>Gender</p>
+                  <p>DOB</p>
+              </div>
+          </div>
+      </div>
+
+      <script>
+          function selectMessage(element) {
+              document.querySelectorAll(".message-item").forEach(item => item.classList.remove("active"));
+              element.classList.add("active");
+          }
+      </script>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

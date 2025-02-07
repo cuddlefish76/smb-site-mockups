@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          // Check if the URL contains ?debug=true
+          const urlParams = new URLSearchParams(window.location.search);
+          const isDebug = urlParams.get('debug') === 'true';
+
+          if (isDebug) {
+              // Add a class to <body> to activate debug borders
+              document.body.classList.add("debug-active");
+          }
+        });
+    </script>
+        <style>
+            .debug-border {
+              border: 2px solid transparent !important; /* Initially hidden */
+            }
+
+            .debug-active .debug-border {
+              border: 2px solid red !important; /* Becomes visible when debug mode is active */
+            }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 20px;
+        }
+        @media (min-width: 768px) {
+            .content {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        @media (max-width: 768px){
+          .content {
+            margin:0px;
+          }
+        }
+        .card {
+            background-color: var(--gray-200);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .card h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+            margin: 0;
+        }
+        .show-more {
+            font-size: 0.9em;
+            color: var(--blue-600);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid var(--gray-400);
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            font-weight: bold;
+        }
+        .scrollable {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .campaigns-table td:last-child {
+            text-align: center;
+        }
+        .usage-stats {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="active debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html" class="debug-border">INBOX</a>
+
+        </nav>
+        <div class="header-credits">
+                <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+                <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Delivery Stats</h2>
+                <a href="reports.html" class="show-more debug-border">Show more</a>
+            </div>
+            <style>
+              table tr:hover {
+                background-color: #cccccc; /* Change this to any color you prefer */
+                cursor: pointer;
+              }
+              table tr {
+                  transition: background-color 0.3s ease-in-out;
+              }
+              .tabs {
+                  display: flex;
+                  border-bottom: 2px solid #ddd;
+              }
+              .tab {
+                  padding: 10px 20px;
+                  cursor: pointer;
+                  border: 1px solid #ddd;
+                  border-bottom: none;
+                  background-color: #f9f9f9;
+              }
+              .tab.active {
+                  background-color: white;
+                  font-weight: bold;
+              }
+              .tab-content {
+                  display: none;
+                  padding: 20px;
+                  border: 1px solid #ddd;
+              }
+              .tab-content.active {
+                  display: block;
+              }
+            </style>
+
+              <table class="table delivery" >
+                  <thead>
+                      <tr>
+                          <th>Queued</th>
+                          <th>Injected</th>
+                          <th>Delivered</th>
+                          <th>Removed</th>
+                          <th>Failed</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>10,223</td>
+                          <td>10,198</td>
+                          <td>10,087 <span style="color:grey; font-style:italic;">98%</span></td>
+                          <td>56 <span style="color:grey; font-style:italic;">0.04%</span></td>
+                          <td>3 <span style="color:grey; font-style:italic;">0.01%</span></td>
+                      </tr>
+                      <tr>
+                          <td>71,252</td>
+                          <td>70,198</td>
+                          <td>70,087 <span style="color:grey; font-style:italic;">98%</span></td>
+                          <td>253 <span style="color:grey; font-style:italic;">0.05%</span></td>
+                          <td>12 <span style="color:grey; font-style:italic;">0.02%</span></td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+
+
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Subscribers</h2>
+            </div>
+            <p>Active: 99,372</p>
+            <p>Total: 459,372</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Campaigns</h2>
+                <a href="campaigns.html" class="show-more debug-border">Show more</a>
+            </div>
+            <div class="">
+              <div class="tabs">
+                  <div class="tab active debug-border" onclick="openTab(event, 'tab1')">Today</div>
+                  <div class="tab debug-border" onclick="openTab(event, 'tab2')">Yesterday</div>
+                  <div class="tab debug-border" onclick="openTab(event, 'tab3')">7 Days</div>
+              </div>
+              <div class="tab-content active scrollable" id="tab1">
+                <table class="table campaigns-table">
+                    <thead>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Delivered</th>
+                            <th>Removed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Diet pills - 100k a day</td>
+                            <td>10,087</td>
+                            <td>56</td>
+                        </tr>
+                        <tr>
+                            <td>Haircut reminder</td>
+                            <td>70,087</td>
+                            <td>253</td>
+                        </tr>
+                        <tr>
+                            <td>Legacy drop - Nov01</td>
+                            <td>8,057</td>
+                            <td>2,233</td>
+                        </tr>
+                        <tr>
+                            <td>Legacy drop - Oct13</td>
+                            <td>60,457</td>
+                            <td>56</td>
+                        </tr>
+                        <tr>
+                            <td>Legacy drop - Nov01</td>
+                            <td>8,057</td>
+                            <td>2,233</td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div class="tab-content scrollable" id="tab2">Content for Tab 2</div>
+              <div class="tab-content scrollable" id="tab3">Content for Tab 3</div>
+              <script>
+                function openTab(event, tabId) {
+                    var i, tabContent, tab;
+                    tabContent = document.getElementsByClassName("tab-content");
+                    for (i = 0; i < tabContent.length; i++) {
+                        tabContent[i].classList.remove("active");
+                    }
+                    tab = document.getElementsByClassName("tab");
+                    for (i = 0; i < tab.length; i++) {
+                        tab[i].classList.remove("active");
+                    }
+                    document.getElementById(tabId).classList.add("active");
+                    event.currentTarget.classList.add("active");
+                }
+              </script>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Create a Campaign</h2>
+            <form>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" class="field-input" placeholder="Name..." style="width: 100%;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <select class="field-input" style="width: 100%;">
+                        <option>List</option>
+                        <option>List 2</option>
+                        <option>List 3</option>
+                    </select>
+                </div>
+                <button onclick="window.location.href='create-campaigns.html';"  type="button"  class="button-primary debug-border" style="width: 100%;">+</button>
+            </form>
+        </div>
+
+        <div class="card usage-stats">
+            <div class="card-header">
+                <h2>Usage Stats</h2>
+                <a href="usage.html" class="show-more debug-border">Show more</a>
+            </div>
+            <p>Last 30 days - 70,087</p>
+            <p>90 days - 140,087</p>
+            <p>6 months - 640,087</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="#" style="text-decoration: none; color: var(--blue-600);">Privacy Policy</a> | <a href="#" style="text-decoration: none; color: var(--blue-600);">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

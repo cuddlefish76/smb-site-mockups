@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Campaign - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the URL contains ?debug=true
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDebug = urlParams.get('debug') === 'true';
+
+      if (isDebug) {
+          // Add a class to <body> to activate debug borders
+          document.body.classList.add("debug-active");
+      }
+    });
+    </script>
+    <style>
+        .debug-border {
+          border: 2px solid transparent !important; /* Initially hidden */
+        }
+
+        .debug-active .debug-border {
+          border: 2px solid red !important; /* Becomes visible when debug mode is active */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+        }
+        .campaign-details {
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .review-section {
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .review-section h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .warning {
+            color: var(--red-500);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .details-link {
+            color: var(--blue-600);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .preview-table th, .preview-table td {
+            border: 1px solid var(--gray-400);
+            padding: 8px;
+            text-align: left;
+        }
+        .preview-table th {
+            background-color: var(--gray-300);
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .actions button {
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: var(--text-base);
+        }
+        .delete-button {
+            background-color: var(--red-500);
+            color: white;
+        }
+        .schedule-button {
+            background-color: var(--green-500);
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="active debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html" class="debug-border">INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="content">
+        <div class="campaign-details">
+            <h2>Campaign Details</h2>
+            <div style="background-color: var(--gray-200); height: 400px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <p>Preview of the campaign message on a mobile mockup</p>
+            </div>
+        </div>
+        <div class="review-section">
+            <h2>Review Your Campaign</h2>
+            <p class="warning">WARNING<br>You need additional 323,234 credits to send this campaign. <span class="details-link">See details</span></p>
+            <table class="preview-table">
+                <thead>
+                    <tr>
+                        <th>Preview Your Campaign</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SMS Characters Used</td>
+                        <td>156</td>
+                    </tr>
+                    <tr>
+                        <td>SMS Credits Used</td>
+                        <td>156</td>
+                    </tr>
+                    <tr>
+                        <td>MMS Credits Used</td>
+                        <td>156</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <label>Send a test msg:</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="text" placeholder="+1 939 555 93 23" style="padding: 8px; border: 1px solid var(--gray-400); border-radius: 4px;">
+                    <button class="button-primary">TEST</button>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="delete-button">Delete Campaign</button>
+                <button class="schedule-button">Send/Schedule Campaign</button>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

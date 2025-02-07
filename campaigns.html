@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaigns - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the URL contains ?debug=true
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDebug = urlParams.get('debug') === 'true';
+
+      if (isDebug) {
+          // Add a class to <body> to activate debug borders
+          document.body.classList.add("debug-active");
+      }
+    });
+    </script>
+    <style>
+        .debug-border {
+          border: 2px solid transparent !important; /* Initially hidden */
+        }
+
+        .debug-active .debug-border {
+          border: 2px solid red !important; /* Becomes visible when debug mode is active */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .campaigns {
+            flex: 3;
+            margin-right: 20px;
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .campaigns-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .campaigns-header h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+        }
+        .campaigns-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: var(--gray-200);
+            border-radius: 8px;
+        }
+        .campaign-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .campaign-item:nth-child(even) {
+            background-color: var(--gray-300);
+        }
+        .campaign-item p {
+            margin: 0;
+            flex: 1;
+        }
+        .campaign-item .delivered {
+            color: var(--orange-500);
+        }
+        .campaign-item .removed {
+            color: var(--red-500);
+        }
+        .usage, .create-campaign {
+            flex: 1;
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .create-campaign input, .create-campaign select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+        }
+        .create-campaign button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--blue-500);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+           .menu {
+               flex-direction: column;
+               align-items: center;
+           }
+           .content {
+             margin:0px;
+             padding:0px;
+             flex-direction: column;
+           }
+           .campaigns {
+             margin-right:0px;
+           }
+           .campaigns-list {
+               max-height: 200px;
+           }
+       }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="active debug-border" >CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html" class="debug-border">INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <style>
+      .tabs {
+          display: flex;
+          border-bottom: 2px solid #ddd;
+      }
+      .tab {
+          padding: 10px 20px;
+          cursor: pointer;
+          border: 1px solid #ddd;
+          border-bottom: none;
+          background-color: #f9f9f9;
+      }
+      .tab.active {
+          background-color: white;
+          font-weight: bold;
+      }
+      .tab-content {
+          display: none;
+          padding: 20px;
+          border: 1px solid #ddd;
+      }
+      .tab-content.active {
+          display: block;
+      }
+      .cross-icon {
+        display:flex;
+          visibility:hidden;
+          width: 20px;
+          height: 20px;
+          background-color: red;
+          border-radius: 50%;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 20px;
+      }
+      .campaign-item:hover .cross-icon{
+          visibility:visible;
+              cusror:pointer;
+      }
+
+    </style>
+    <main class="content">
+        <div class="campaigns">
+            <div class="campaigns-header">
+                <h2>Campaigns</h2>
+            </div>
+            <div class="tabs">
+                <div class="tab active debug-border" onclick="openTab(event, 'tab1')">Today</div>
+                <div class="tab debug-border" onclick="openTab(event, 'tab2')">Yesterday</div>
+                <div class="tab debug-border" onclick="openTab(event, 'tab3')">7 Days</div>
+            </div>
+            <div class="tab-content active scrollable" id="tab1">
+              <div style="display: flex; font-weight: bold; margin-bottom: 10px;">
+                  <p style="flex: 1;">Campaign Name</p>
+                  <p style="flex: 1; text-align: center;">Delivered</p>
+                  <p style="flex: 1; text-align: center;">Removed</p>
+              </div>
+              <div class="campaigns-list">
+                  <div class="campaign-item">
+                      <p>1. Diet pills - 100k a day - Wednesday list</p>
+                      <p class="delivered" style="text-align: center;">10,087 67%</p>
+                      <p class="removed" style="text-align: center;">56 0.04%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>2. Haircut reminder - 23k a day - Monday</p>
+                      <p class="delivered" style="text-align: center;">70,087 98%</p>
+                      <p class="removed" style="text-align: center;">253 0.24%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>3. Diet pills - Legacy drop - Nov01 - Nov23 - list</p>
+                      <p class="delivered" style="text-align: center;">8,057 89%</p>
+                      <p class="removed" style="text-align: center;">2,233 5.04%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>4. Holiday Sales - 50% Off - Seasonal Campaign</p>
+                      <p class="delivered" style="text-align: center;">5,000 75%</p>
+                      <p class="removed" style="text-align: center;">500 2%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>5. Winter Collection - Reminder</p>
+                      <p class="delivered" style="text-align: center;">15,000 80%</p>
+                      <p class="removed" style="text-align: center;">1,200 3%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>6. Black Friday Offers</p>
+                      <p class="delivered" style="text-align: center;">30,000 90%</p>
+                      <p class="removed" style="text-align: center;">2,000 5%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item" style="position: relative;">
+                      <p>7. Summer Clearance</p>
+                      <p class="delivered" style="text-align: center;">12,000 85%</p>
+                      <p class="removed" style="text-align: center;">1,000 4%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>2. Haircut reminder - 23k a day - Monday</p>
+                      <p class="delivered" style="text-align: center;">70,087 98%</p>
+                      <p class="removed" style="text-align: center;">253 0.24%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+                  <div class="campaign-item">
+                      <p>3. Diet pills - Legacy drop - Nov01 - Nov23 - list</p>
+                      <p class="delivered" style="text-align: center;">8,057 89%</p>
+                      <p class="removed" style="text-align: center;">2,233 5.04%</p>
+                        <div class="cross-icon">
+                            <i class="fa fa-times"></i>
+                        </div>
+                  </div>
+              </div>
+            </div>
+            <div class="tab-content scrollable" id="tab2">Content for Tab 2</div>
+            <div class="tab-content scrollable" id="tab3">Content for Tab 3</div>
+            <script>
+              function openTab(event, tabId) {
+                  var i, tabContent, tab;
+                  tabContent = document.getElementsByClassName("tab-content");
+                  for (i = 0; i < tabContent.length; i++) {
+                      tabContent[i].classList.remove("active");
+                  }
+                  tab = document.getElementsByClassName("tab");
+                  for (i = 0; i < tab.length; i++) {
+                      tab[i].classList.remove("active");
+                  }
+                  document.getElementById(tabId).classList.add("active");
+                  event.currentTarget.classList.add("active");
+              }
+            </script>
+        </div>
+        <div>
+            <div class="usage">
+                <h2 style="font-size: 1.5em; color: var(--blue-800); border-bottom: 2px solid var(--blue-500); padding-bottom: 5px;">Usage</h2>
+                <p>SMS: 99,372</p>
+                <p>MMS: 459,372</p>
+            </div>
+            <div class="create-campaign">
+                <h2 style="font-size: 1.5em; color: var(--blue-800); border-bottom: 2px solid var(--blue-500); padding-bottom: 5px;">Create a Campaign</h2>
+                <input type="text" placeholder="Name...">
+                <select>
+                    <option>List</option>
+                </select>
+                <button onclick="window.location.href='create-campaigns.html';"  type="button"  class="button-primary debug-border" style="width: 100%;">+</button>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

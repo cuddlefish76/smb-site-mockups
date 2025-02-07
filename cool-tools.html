@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Tools - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the URL contains ?debug=true
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDebug = urlParams.get('debug') === 'true';
+
+      if (isDebug) {
+          // Add a class to <body> to activate debug borders
+          document.body.classList.add("debug-active");
+      }
+    });
+    </script>
+    <style>
+        .debug-border {
+          border: 2px solid transparent !important; /* Initially hidden */
+        }
+
+        .debug-active .debug-border {
+          border: 2px solid red !important; /* Becomes visible when debug mode is active */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+        }
+        .keyword-section {
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 50%;
+        }
+        .qr-code-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 50%;
+        }
+        .qr-code {
+            background-color: white;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+        }
+        .keyword-section h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .actions button {
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: var(--text-base);
+        }
+        .edit-button {
+            background-color: var(--blue-500);
+            color: white;
+        }
+        .save-button {
+            background-color: var(--green-500);
+            color: white;
+        }
+        @media (max-width: 768px) {
+           .content {
+             margin:0px;
+             padding:0px;
+           }
+           .keyword-section,.qr-code-section{
+             width: auto;
+           }
+         }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        .footer a {
+            text-decoration: none;
+            color: var(--blue-600);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="active debug-border">COOL TOOLS</a>
+            <a href="inbox.html" class="debug-border">INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="content">
+        <section class="keyword-section">
+            <h2>Create Your Keyword</h2>
+            <div class="input-group">
+                <label>Choose your text to join keyword</label>
+                <input type="text" placeholder="i.e. JOIN">
+            </div>
+            <div class="input-group">
+                <label>Create your welcome message</label>
+                <textarea rows="3">Welcome to {company_name}. msg rates may apply, reply STOP to cancel</textarea>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="save-button">Save</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Choose your text to stop keyword</label>
+                <input type="text" placeholder="i.e. STOP">
+            </div>
+            <div class="input-group">
+                <label>Create your STOP message</label>
+                <textarea rows="3">You have unsubscribed from {company_name}. msg rates may apply, reply HELP for help</textarea>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="save-button">Save</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Choose your text to help keyword</label>
+                <input type="text" placeholder="i.e. HELP">
+            </div>
+            <div class="input-group">
+                <label>Create your HELP message</label>
+                <textarea rows="3">Welcome to {company_name}. Email us test@test.com. msg rates may apply, reply STOP to cancel</textarea>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="save-button">Save</button>
+                </div>
+            </div>
+        </section>
+        <section class="qr-code-section">
+            <div class="qr-code">
+                <img src="images/qr.png" alt="QR Code" >
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

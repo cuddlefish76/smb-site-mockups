@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - CRM Mockup</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link rel="stylesheet" href="main.css">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the URL contains ?debug=true
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDebug = urlParams.get('debug') === 'true';
+
+      if (isDebug) {
+          // Add a class to <body> to activate debug borders
+          document.body.classList.add("debug-active");
+      }
+    });
+    </script>
+    <style>
+        .debug-border {
+          border: 2px solid transparent !important; /* Initially hidden */
+        }
+
+        .debug-active .debug-border {
+          border: 2px solid red !important; /* Becomes visible when debug mode is active */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-800);
+            padding: 10px 20px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .menu a {
+            color: var(--gray-100);
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .menu a.active {
+            background-color: var(--blue-600);
+        }
+        .header-credits {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .header-credits div {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-credits a {
+            color: var(--gray-100);
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 5px;
+        }
+
+        .header-credits .button {
+            background-color: var(--blue-500);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @media (min-width: 768px) {
+            .header-credits {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-credits div {
+                flex-direction: row;
+            }
+            .menu {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 20px;
+        }
+        @media (min-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px){
+          .content {
+            margin:0px;
+          }
+          .stats-container{
+            flex-direction: column;
+          }
+          .stats-container div{
+            padding: 10px;
+          }
+        }
+        .card {
+            background-color: var(--gray-200);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .card h2 {
+            font-size: 1.5em;
+            color: var(--blue-800);
+            border-bottom: 2px solid var(--blue-500);
+            padding-bottom: 5px;
+            margin: 0;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background-color: var(--gray-100);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .stats-container div {
+            text-align: center;
+        }
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #chart-container {
+            height: 300px;
+            background-color: var(--gray-300);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray-700);
+            font-size: 1.2em;
+            text-align: center;
+        }
+        select, button {
+            padding: 8px 12px;
+            border: 1px solid var(--gray-400);
+            border-radius: 4px;
+            background-color: var(--gray-100);
+            cursor: pointer;
+        }
+        button {
+            background-color: var(--blue-500);
+            color: white;
+            border: none;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="active debug-border">REPORTS</a>
+            <a href="campaigns.html" class="debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html" class="debug-border">INBOX</a>
+        </nav>
+
+        <div class="header-credits">
+                <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999 </span></a>
+                <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Delivery Stats</h2>
+            </div>
+            <div class="filters">
+                <select>
+                    <option>All</option>
+                    <option>Campaign 1</option>
+                    <option>Campaign 2</option>
+                </select>
+                <div>
+                    <button style="background-color: var(--gray-400); cursor: not-allowed; color: var(--gray-600);">Charts</button>
+                    <a href="reports-table.html" class="debug-border" style="text-decoration: none;"><button>Tables</button></a>
+                </div>
+                <div>
+                    <label>Date Range:</label>
+                    <input type="date" value="2024-12-20"> - <input type="date" value="2024-12-26">
+                </div>
+            </div>
+            <div class="stats-container">
+                <div>
+                    <p style="font-weight:600;">Total API Requests</p>
+                    <h3>71,252</h3>
+                </div>
+                <div>
+                    <p style="font-weight:600;">Total Queued</p>
+                    <h3 style="border-bottom: 5px solid purple;">70,198</h3>
+                </div>
+                <div>
+                    <p style="font-weight:600;">Injected</p>
+                    <h3 style="border-bottom: 5px solid blue;">70,087</h3>
+                </div>
+                <div>
+                    <p style="font-weight:600;">Delivered</p>
+                    <h3 style="border-bottom: 5px solid green;">70,045</h3>
+                </div>
+                <div>
+                    <p style="font-weight:600;">Removed</p>
+                    <h3 style="border-bottom: 5px solid red;">253</h3>
+                </div>
+                <div>
+                    <p style="font-weight:600;">Failed</p>
+                    <h3>12</h3>
+                </div>
+            </div>
+            <div id="chart-container">
+                <img src="images/graph.png"  style="width: 100%; height: 100%;" />
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" style="text-align: center; margin-top: 20px; font-size: var(--text-sm); color: var(--gray-600);">
+        <a href="#" style="text-decoration: none; color: var(--blue-600);">Privacy Policy</a> | <a href="#" style="text-decoration: none; color: var(--blue-600);">Terms & Conditions</a>
+    </footer>
+</body>
+</html>

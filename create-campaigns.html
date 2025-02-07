@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Settings</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="project_controls.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check if the URL contains ?debug=true
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDebug = urlParams.get('debug') === 'true';
+
+      if (isDebug) {
+          // Add a class to <body> to activate debug borders
+          document.body.classList.add("debug-active");
+      }
+    });
+    </script>
+    <style>
+        .debug-border {
+          border: 2px solid transparent !important; /* Initially hidden */
+        }
+
+        .debug-active .debug-border {
+          border: 2px solid red !important; /* Becomes visible when debug mode is active */
+        }
+      .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: var(--blue-800);
+          padding: 10px 20px;
+      }
+      .menu {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+      .menu a {
+          color: var(--gray-100);
+          text-decoration: none;
+          padding: 5px 10px;
+          border-radius: 5px;
+      }
+      .menu a.active {
+          background-color: var(--blue-600);
+      }
+      .header-credits {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+      }
+
+      .header-credits div {
+          display: flex;
+          gap: 10px;
+      }
+
+      .header-credits a {
+          color: var(--gray-100);
+          text-decoration: none;
+          font-size: 1em;
+          padding: 10px 5px;
+      }
+
+      .header-credits .button {
+          background-color: var(--blue-500);
+          color: white;
+          padding: 8px 12px;
+          border-radius: 4px;
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+          display: inline-block;
+      }
+
+      @media (min-width: 768px) {
+          .header-credits {
+              flex-direction: row;
+              align-items: center;
+          }
+
+          .header-credits div {
+              flex-direction: row;
+          }
+          .menu {
+              flex-direction: row;
+              gap: 15px;
+          }
+      }
+      .content {
+          display: flex;
+          justify-content: space-between;
+          padding: 20px;
+      }
+      .campaigns {
+          flex: 3;
+          margin-right: 20px;
+          background-color: var(--gray-100);
+          border-radius: 8px;
+          padding: 20px;
+      }
+      .campaigns-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+      }
+      .campaigns-header h2 {
+          font-size: 1.5em;
+          color: var(--blue-800);
+      }
+      .campaigns-list {
+          max-height: 300px;
+          overflow-y: auto;
+          padding: 10px;
+          background-color: var(--gray-200);
+          border-radius: 8px;
+      }
+      .campaign-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+      }
+      .campaign-item:nth-child(even) {
+          background-color: var(--gray-300);
+      }
+      .campaign-item p {
+          margin: 0;
+          flex: 1;
+      }
+      .campaign-item .delivered {
+          color: var(--orange-500);
+      }
+      .campaign-item .removed {
+          color: var(--red-500);
+      }
+      .usage, .create-campaign {
+          flex: 1;
+          background-color: var(--gray-100);
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 20px;
+      }
+      .create-campaign input, .create-campaign select {
+          width: 100%;
+          margin-bottom: 10px;
+          padding: 10px;
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+      }
+      .create-campaign button {
+          width: 100%;
+          padding: 10px;
+          background-color: var(--blue-500);
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      .main {
+          padding: 20px;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          box-sizing: border-box;
+      }
+
+      .campaign-settings {
+          background-color: var(--gray-200);
+          border-radius: 8px;
+          padding: 20px;
+          box-sizing: border-box;
+          overflow-x: hidden;
+      }
+
+      .campaign-settings h2 {
+          margin-bottom: 20px;
+          font-size: var(--text-xl);
+          color: var(--blue-800);
+      }
+
+      .campaign-settings .form-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 20px;
+      }
+
+      .form-group {
+          display: flex;
+          flex-direction: column;
+      }
+
+      .form-group label {
+          margin-bottom: 5px;
+          font-size: var(--text-sm);
+      }
+
+      .form-group input,
+      .form-group select {
+          padding: 8px;
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+      }
+
+      .form-group input[type="checkbox"] {
+          width: auto;
+          margin-right: 10px;
+      }
+
+      .button-group {
+          display: flex;
+          gap: 10px;
+      }
+
+      .button {
+          background-color: var(--blue-500);
+          color: white;
+          padding: 8px 12px;
+          border-radius: 4px;
+          text-align: center;
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+      }
+
+      .button.pause {
+          background-color: var(--yellow-500);
+      }
+
+      .button.archive {
+          background-color: var(--red-500);
+      }
+
+      .campaign-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+      }
+
+      .campaign-header h2 {
+          font-size: var(--text-xl);
+          color: var(--text-gray-color);
+      }
+
+      .campaign-header .status {
+          font-size: var(--text-lg);
+          color: var(--green-700);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .campaign-header .status select {
+          padding: 5px;
+          font-size: var(--text-sm);
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+          background-color: var(--gray-100);
+          color: var(--text-color);
+      }
+      .button i {
+          margin-right: 5px;
+          font-size: 14px;
+      }
+
+      .campaign-header .status select {
+          padding: 5px;
+          font-size: 14px;
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+          background-color: var(--gray-100);
+          color: var(--text-color);
+      }
+      .campaign-header .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 10px;
+            border-top: 1px solid var(--gray-300);
+            padding-top: 10px;
+        }
+      .campaign-header .button {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          font-size: 14px;
+      }
+
+      .button-group button i {
+          font-size: 16px;
+      }
+      /* Responsive styling for button group */
+      @media (max-width: 768px) {
+          .button-group {
+              flex-direction: column; /* Stacks buttons vertically */
+              align-items: stretch; /* Buttons take full width */
+          }
+
+          .button {
+              width: 100%; /* Full-width buttons for small screens */
+          }
+
+          .details {
+              align-items: stretch;
+              gap: 10px;
+          }
+      }
+      .campaign-settings {
+          background-color: var(--gray-200);
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .settings-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+          background-color: var(--blue-500);
+          color: white;
+          padding: 15px 20px;
+          border-radius: 6px;
+          font-size: 1rem;
+          font-weight: bold;
+      }
+
+      .settings-header i {
+          font-size: 1.2rem;
+      }
+
+      .collapsible-content {
+          display: none;
+          padding-top: 15px;
+      }
+
+      .collapsible-content.active {
+          display: block;
+      }
+      .columns {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          margin-top: 20px;
+          box-sizing: border-box;
+      }
+      /* Responsive layout for smaller screens */
+      @media (max-width: 768px) {
+          .columns {
+              grid-template-columns: 1fr; /* Collapse to a single column */
+              gap: 15px;
+          }
+
+          .column {
+              padding: 10px; /* Reduce padding for smaller screens */
+          }
+      }
+
+      @media (max-width: 480px) {
+          .columns {
+              gap: 10px; /* Smaller gap for very small screens */
+          }
+
+          .column {
+              padding: 5px; /* Further reduce padding */
+          }
+      }
+      .column {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          padding: 20px;
+          box-sizing: border-box;
+          overflow: hidden;
+      }
+      .form-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+          margin-top: 20px;
+      }
+
+      .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+      }
+
+      .form-group label {
+          font-weight: bold;
+          font-size: 0.9rem;
+          color: var(--text-dark);
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+          padding: 10px;
+          font-size: 0.9rem;
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+          background-color: white;
+      }
+
+      .form-group textarea {
+          height: 100px;
+          resize: vertical;
+      }
+
+      .form-group select[multiple] {
+          height: 120px;
+          overflow-y: auto;
+      }
+
+      .form-group input[type="date"],
+      .form-group input[type="number"] {
+          width: auto;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+          border-color: var(--blue-500);
+          outline: none;
+          box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+      }
+      .tooltip-icon {
+          font-size: 0.9rem;
+          color: var(--gray-500);
+          margin-left: 5px;
+          cursor: pointer;
+          position: absolute;
+      }
+
+      .tooltip-icon:hover::after {
+          content: attr(title);
+          position: absolute;
+          bottom: 125%; /* Adjust position above the icon */
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: var(--gray-700);
+          color: white;
+          padding: 10px; /* Padding adjusted */
+          border-radius: 4px;
+          font-size: 0.8rem;
+          text-align: left;
+          white-space: normal; /* Allows text wrapping */
+          word-wrap: break-word; /* Ensures words break properly */
+          overflow-wrap: break-word; /* Compatibility for text wrapping */
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+          z-index: 10;
+          width: 300px; /* Tooltip width */
+          height: auto; /* Allow height to adjust based on content */
+          max-height: 100px; /* Optional: Limit max height if needed */
+          overflow-y: auto; /* Adds scrolling if content exceeds max height */
+          font-family: system-ui;
+          font-weight:300;
+      }
+
+      .tooltip-icon:hover {
+          color: var(--blue-500); /* Optional hover effect on the icon */
+      }
+      .custom-multiselect {
+          position: relative;
+          margin-bottom: 20px;
+          font-family: system-ui;
+      }
+
+      .custom-multiselect label {
+          font-weight: bold;
+          margin-bottom: 5px;
+          display: block;
+      }
+
+      .tags-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 5px;
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+          padding: 8px;
+          background-color: white;
+          min-height: 40px;
+      }
+
+      .tags-container .tag {
+          background-color: var(--blue-500);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 12px;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+      }
+
+      .tags-container .tag i {
+          cursor: pointer;
+          font-size: 0.8rem;
+      }
+
+      .dropdown {
+          position: relative;
+          margin-top: 5px;
+          border: 1px solid var(--gray-400);
+          border-radius: 4px;
+          background-color: white;
+          max-height: 150px; /* Limit dropdown height */
+          overflow-y: auto; /* Enable scrolling if content exceeds height */
+          padding: 10px;
+      }
+
+      .dropdown-content label {
+          display: flex;
+          align-items: center;
+          padding: 5px 10px;
+          cursor: pointer;
+          font-weight: 300;
+      }
+
+      .dropdown-content label:hover {
+          background-color: var(--gray-200);
+      }
+
+      .dropdown-content input {
+          margin-right: 10px;
+      }
+      .b-campaign, .mms-campaign, .new--message{
+        display: none;
+      }
+      .footer {
+          text-align: center;
+          margin-top: 20px;
+          font-size: var(--text-sm);
+          color: var(--gray-600);
+      }
+      .footer a {
+          text-decoration: none;
+          color: var(--blue-600);
+      }
+    </style>
+
+</head>
+<body>
+    <header class="header">
+        <nav class="menu">
+            <a href="index.html" class="debug-border">HOME</a>
+            <a href="reports.html" class="debug-border">REPORTS</a>
+            <a href="campaigns.html" class="active debug-border">CAMPAIGNS</a>
+            <a href="cool-tools.html" class="debug-border">COOL TOOLS</a>
+            <a href="subscribers.html" class="debug-border">SUBSCRIBERS</a>
+            <a href="inbox.html" class="debug-border">INBOX</a>
+        </nav>
+        <div class="header-credits">
+            <a href="credits.html" class="debug-border">Credits: <span style="color: var(--red-500);">9,999</span></a>
+            <a href="account.html" class="button debug-border">Account</a>
+        </div>
+    </header>
+    <main class="main">
+
+        <section class="campaign-settings">
+          <div class="campaign-header" style="margin-bottom: 0px;">
+              <h2 style="margin-bottom: 0px;">View Campaign (Press pause to edit)</h2>
+              <div class="status">
+                  <button class="button"><i class="fa fa-save"></i> Save</button>
+              </div>
+          </div>
+
+        </section>
+
+        <section style="display: flex; justify-content: space-between; align-items: baseline;">
+          <div>
+
+              <div class="button-group">
+                  <button class="button"><i class="fa fa-arrow-left"></i> Back</button>
+                  <button class="button pause"><i class="fa fa-pause"></i> Pause</button>
+                  <button class="button archive"><i class="fa fa-archive"></i> Archive</button>
+                  <button class="button"><i class="fa fa-copy"></i> Duplicate</button>
+                  <button class="button"><i class="fa fa-file"></i> Save as a Template</button>
+              </div>
+          </div>
+
+          <div class="columns" style="margin-top: 0px;">
+              <div class="column">
+                <div class="details">
+                     <h2 style="margin-bottom: 0px;"><span class="campaign-name">Campaign Name:</span> </h2>
+                 </div>
+              </div>
+              <div class="column">
+              </div>
+              <div class="column">
+                <div class="details">
+                     <h2 style="margin-bottom: 0px; text-align:right;"><span class="status-summary" style="color:green;">Active and awaiting subscribers</span></h2>
+                 </div>
+              </div>
+          </div>
+
+        </section>
+
+        <section class="campaign-settings">
+          <div class="settings-header" onclick="toggleSettings()">
+              <span><i class="fa fa-minus debug-border"></i> Campaign Settings</span>
+          </div>
+          <div class="collapsible-content active" id="settingsContent" style="padding-top: 0px;">
+              <div class="columns">
+                  <div class="column">
+                      <div class="form-group">
+                        <label for="status"><span>Status:</span></label>
+                      </div>
+                      <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                          <select name="status" style="width:200px;" class="debug-border">
+                              <option value="active" selected>Active</option>
+                              <option value="paused">Draft</option>
+                              <option value="archived">Paused</option>
+                              <option value="archived">Completed</option>
+                              <option value="archived">Error</option>
+                          </select>
+                          <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">Audience Estimator:</span>  1234</label>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="campaign-name">Campaign Name</label>
+                          <input type="text" id="campaign-name" placeholder="Campaign Name">
+                      </div>
+                      <div class="form-group">
+                          <label for="start-date">Start Date (optional)  <i class="fa fa-question-circle tooltip-icon debug-border" title="If you don't set a start date and activate the campaign, it will be sent immediately. If you specify both a start and stop date, the campaign will run until the records (between the date range) are exhausted or the stop date is reached."></i></label>
+                          <input type="date" id="start-date">
+                      </div>
+                      <div class="form-group">
+                          <label for="stop-date">Stop Date (optional)</label>
+                          <input type="date" id="stop-date">
+                      </div>
+                      <div class="form-group">
+                          <label for="send-daily-limit">Send Daily Limit  <i class="fa fa-question-circle tooltip-icon debug-border" title="If sending many messages, split them within the daily limit to spread them over several days."></i></label>
+                          <input type="number" id="send-daily-limit" placeholder="Enter daily limit">
+                      </div>
+                      <div class="form-group">
+                          <label for="send-limit-total">Send Limit - Total <i class="fa fa-question-circle tooltip-icon debug-border" title="You can set a total message limit for this campaign using the 'Send Limit - Total' feature."></i></label>
+                          <input type="number" id="send-limit-total" placeholder="Enter total limit">
+                      </div>
+                      <div class="custom-multiselect debug-border">
+                          <label for="frequency">Frequency <i class="fa fa-question-circle tooltip-icon debug-border" title="You can select specific days of the week to send messages. The campaign will continue until you run out of subscribers or reach the specified stop date, if set."></i></label>
+                          <div class="tags-container" id="tags-frequency"></div>
+                          <div class="dropdown">
+                              <div class="dropdown-content" id="dropdown-frequency">
+                                  <label><input type="checkbox" value="Monday"> Monday</label>
+                                  <label><input type="checkbox" value="Tuesday"> Tuesday</label>
+                                  <label><input type="checkbox" value="Wednesday"> Wednesday</label>
+                                  <label><input type="checkbox" value="Thursday"> Thursday</label>
+                                  <label><input type="checkbox" value="Friday"> Friday</label>
+                                  <label><input type="checkbox" value="Saturday"> Saturday</label>
+                                  <label><input type="checkbox" value="Sunday"> Sunday</label>
+                                  <label><input type="checkbox" value="Every day"> Every day</label>
+                                  <label><input type="checkbox" value="Weekdays"> Weekdays</label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="column">
+                      <div class="custom-multiselect debug-border">
+                          <label for="select-list">Select List</label>
+                          <div class="tags-container" id="tags-list"></div>
+                          <div class="dropdown">
+                              <div class="dropdown-content" id="dropdown-list">
+                                  <label><input type="checkbox" value="List 1"> List 1</label>
+                                  <label><input type="checkbox" value="List 2"> List 2</label>
+                                  <label><input type="checkbox" value="List 3"> List 3</label>
+                                  <label><input type="checkbox" value="List 4"> List 4</label>
+                                  <label><input type="checkbox" value="List 5"> List 5</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="gender">Gender</label>
+                          <select id="gender">
+                              <option value="all">All</option>
+                              <option value="male">Male</option>
+                              <option value="female">Female</option>
+                              <option value="unisex">Unisex</option>
+                              <option value="unknown">Unknown</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="clicker-settings">Clicker Settings <i class="fa fa-question-circle tooltip-icon debug-border" title="When you use short URLs that we are managing, we track click history. You can specify minimum clicks (e.g., 1) and maximum clicks (e.g., 100), and we will send messages to anyone who clicked at least once or between the specified minimum and maximum clicks. Otherwise, leave it blank."></i></label>
+                          <div class="" style="display: flex; justify-content: space-between;">
+                                <input type="text" id="clicker-settings" placeholder="Minimum clicks">
+                                <input type="text" id="clicker-settings" placeholder="Maximum clicks">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="conversions">Conversions <i class="fa fa-question-circle tooltip-icon debug-border" title="We can track conversions if you use our snippet. Simply install it on your website's checkout page or any other relevant location."></i></label>
+                          <input type="text" id="conversions" placeholder="Lorem Ipsum">
+                      </div>
+                      <div class="form-group">
+                          <label for="zipcode-settings">Zipcode Settings</label>
+                          <input type="text" id="zipcode-settings" placeholder="Lorem Ipsum">
+                      </div>
+                      <div class="form-group">
+                        <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">Audience Estimator:</span>  1234</label>
+                      </div>
+                  </div>
+                  <div class="column">
+                    <div class="form-group">
+                        <label for="conversions">Other User Settings</label>
+                        <textarea id="conversions" placeholder="Lorem Ipsum"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="conversions">Other User Settings</label>
+                        <textarea id="conversions" placeholder="Lorem Ipsum"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="conversions">Other User Settings</label>
+                        <textarea id="conversions" placeholder="Lorem Ipsum"></textarea>
+                    </div>
+
+                  </div>
+              </div>
+
+          </div>
+          <script>
+              document.addEventListener('DOMContentLoaded', () => {
+                  const settingsSections = document.querySelectorAll('.settings-header');
+
+                  settingsSections.forEach((header) => {
+                      const content = header.nextElementSibling;
+                      const icon = header.querySelector('i');
+
+                      header.addEventListener('click', () => {
+                          content.classList.toggle('active');
+                          if (content.classList.contains('active')) {
+                              icon.classList.remove('fa-plus');
+                              icon.classList.add('fa-minus');
+                          } else {
+                              icon.classList.remove('fa-minus');
+                              icon.classList.add('fa-plus');
+                          }
+                      });
+                  });
+              });
+          </script>
+          <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const setupMultiSelect = (dropdownId, tagsContainerId) => {
+                const dropdown = document.getElementById(dropdownId);
+                const tagsContainer = document.getElementById(tagsContainerId);
+
+                dropdown.addEventListener('change', (event) => {
+                    const checkbox = event.target;
+                    const value = checkbox.value;
+
+                    if (checkbox.checked) {
+                        // Add tag
+                        const tag = document.createElement('div');
+                        tag.classList.add('tag');
+                        tag.textContent = value;
+
+                        const removeIcon = document.createElement('i');
+                        removeIcon.classList.add('fa', 'fa-times');
+                        removeIcon.addEventListener('click', () => {
+                            // Remove tag and uncheck the checkbox
+                            tag.remove();
+                            checkbox.checked = false;
+                        });
+
+                        tag.appendChild(removeIcon);
+                        tagsContainer.appendChild(tag);
+                    } else {
+                        // Remove tag
+                        const existingTag = [...tagsContainer.children].find(
+                            (tag) => tag.textContent.trim() === value
+                        );
+                        if (existingTag) existingTag.remove();
+                    }
+                });
+            };
+
+            // Initialize both custom select fields
+            setupMultiSelect('dropdown-list', 'tags-list');
+            setupMultiSelect('dropdown-frequency', 'tags-frequency');
+        });
+          </script>
+
+      </section>
+
+      <section class="campaign-settings">
+        <div class="settings-header" onclick="toggleSettings()">
+            <span><i class="fa fa-minus debug-border"></i> Messages</span>
+        </div>
+        <div class="collapsible-content active">
+          <div class="message-one">
+            <div class="campaign-header">
+                <h2 style="margin-bottom:0px; width:100%; text-align:center;">Message 1</h2>
+            </div>
+            <div class="columns">
+                <!-- Column 1 -->
+                <div class="column">
+                    <div class="form-group" style="flex-direction: row; align-items: baseline;">
+                        <input type="checkbox" id="status" checked>
+                        <h2><span class="status-text">Active</span></h2>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time to send (local time of subscriber)</label>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="start-time">Start time (optional):<i class="fa fa-question-circle tooltip-icon" title="The start time is based on your subscribers' local time zone. By default, the time range is set from 8 AM to 9 PM, in compliance with TCPA rule."></i></label>
+                                <input type="time" id="start-time" placeholder="Default: 8am">
+                            </div>
+                            <div class="form-group">
+                                <label for="stop-time">Stop time (optional):</label>
+                                <input type="time" id="stop-time" placeholder="Default: 9pm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Supported substitutions:</label>
+                        <p>Supported substitutions in the SMS message include:</p>
+                        <ul>
+                            <li>{firstName}, {lastName}</li>
+                            <li>{optinDate}, {phone}, {link}</li>
+                        </ul>
+                        <p>Supported substitutions in the URL:</p>
+                        <ul>
+                            <li>{MTA}, {listId}</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group debug-border">
+                            <label for="mms">
+                                <input type="checkbox" id="mms"> MMS
+                            </label>
+                            <label for="split-test">
+                                <input type="checkbox" id="split-test"> A/B Split test
+                            </label>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="template">Create message A</label>
+                        <select id="template">
+                            <option value="library">Template library</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <textarea placeholder="Lorem Ipsum: Hi, {first_name}! Check out our new offer here {link}. Reply STOP to cancel"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">URL <i style="font-weight: 300;">This will be shortened to {link}</i></label>
+                        <input type="text" id="url" placeholder="https://apple.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">Segments:</span>  2 <i class="fa fa-question-circle tooltip-icon debug-border" title="If a message exceeds 160 characters, it will count as two messages and use the corresponding number of credits."></i></label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">SMS credits available:</span>  9,999</label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">MMS Credits available:</span>  3,333</label>
+                    </div>
+                    <button class="button save">Save to library</button>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="preview">Preview A</label>
+                        <div class="mms-campaign">
+                          <label for="image-upload" class="button upload-button debug-border"><i class="fa fa-upload "></i> Upload Image</label>
+                          <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                          <div class="image-preview">
+                              <p>No image uploaded</p>
+                              <img id="uploaded-image" src="#" alt="Uploaded Image" style="display: none; max-width: 100%; border-radius: 8px;">
+                          </div>
+                        </div>
+                        <textarea id="preview" style="background: #f8f8b0;  pointer-events: none;" disabled>Lorem Ipsum</textarea>
+                        <div style="display:flex;">
+                          <p><span style="color:red;">165 Chars</span> / -5 remaining</p>
+                          <p># of msg credits: 2</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="form-group">
+                          <p class="small-note">link results to this <input type="text" disabled value="https://short.url/sfsde3sd"></p>
+                          <p class="small-note"><i style="font-weight: 300;">we add 8 char hash to track clicks</i></p>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="columns b-campaign">
+                <!-- Column 1 -->
+                <div class="column">
+
+                </div>
+
+                <!-- Column 2 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="template">Create message B</label>
+                        <select id="template">
+                            <option value="library">Template library</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <textarea placeholder="Lorem Ipsum: Hi, {first_name}! Check out our new offer here {link}. Reply STOP to cancel"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">URL <i style="font-weight: 300;">This will be shortened to {link}</i></label>
+                        <input type="text" id="url" placeholder="https://apple.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">Segments:</span>  2 <i class="fa fa-question-circle tooltip-icon debug-border" title="If a message exceeds 160 characters, it will count as two messages and use the corresponding number of credits."></i></label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">SMS credits available:</span>  9,999</label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">MMS Credits available:</span>  3,333</label>
+                    </div>
+                    <button class="button save">Save to library</button>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="preview">Preview B</label>
+                        <div class="mms-campaign">
+                          <label for="image-upload" class="button upload-button debug-border"><i class="fa fa-upload"></i> Upload Image</label>
+                          <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                          <div class="image-preview">
+                              <p>No image uploaded</p>
+                              <img id="uploaded-image" src="#" alt="Uploaded Image" style="display: none; max-width: 100%; border-radius: 8px;">
+                          </div>
+                        </div>
+                        <textarea id="preview"  style="background: #f8f8b0;  pointer-events: none;"  disabled>Lorem Ipsum</textarea>
+                        <div style="display:flex;">
+                          <p><span style="color:red;">165 Chars</span> / -5 remaining</p>
+                          <p># of msg credits: 2</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="form-group">
+                          <p class="small-note">link results to this <input type="text" disabled value="https://short.url/sfsde3sd"></p>
+                          <p class="small-note"><i style="font-weight: 300;">we add 8 char hash to track clicks</i></p>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="columns">
+                <!-- Column 1 -->
+                <div class="column">
+                </div>
+                <div class="column" style="align-items: center;">
+
+                    <div class="button-group">
+                         <div style=" width: 20px;">
+                          <i class="fa fa-question-circle tooltip-icon debug-border" style="margin-right: -20px;" title="Here you can create drip campaigns and create as many follow up messages as you need."></i>
+                         </div>
+                          <button class="button add debug-border"><i class="fa fa-plus"></i> Add message </button>
+                    </div>
+                </div>
+                <div class="column">
+                </div>
+            </div>
+            <hr />
+          </div>
+
+          <!-- MESSAGE 2 -->
+          <div class="new--message">
+            <div class="campaign-header">
+                <h2 style="margin-bottom:0px; width:100%; text-align:center;">Message 2</h2>
+            </div>
+            <div class="columns">
+                <!-- Column 1 -->
+                <div class="column">
+                    <div class="form-group" style="flex-direction: row; align-items: baseline;">
+                        <input type="checkbox" id="status" checked>
+                        <h2><span class="status-text">Active</span></h2>
+                        <div class="delay-container">
+                            <input type="number" class="delay-input" value="3" min="1" style="width:50px;">
+                            <select class="delay-dropdown">
+                                <option value="days">Days</option>
+                                <option value="hours">Hours</option>
+                                <option value="weeks">Mins</option>
+                            </select>
+                            <span>since Message 1</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time to send (local time of subscriber)</label>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="start-time">Start time (optional):<i class="fa fa-question-circle tooltip-icon debug-border" title="The start time is based on your subscribers' local time zone. By default, the time range is set from 8 AM to 9 PM, in compliance with TCPA rule."></i></label>
+                                <input type="time" id="start-time" placeholder="Default: 8am">
+                            </div>
+                            <div class="form-group">
+                                <label for="stop-time">Stop time (optional):</label>
+                                <input type="time" id="stop-time" placeholder="Default: 9pm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Supported substitutions:</label>
+                        <p>Supported substitutions in the SMS message include:</p>
+                        <ul>
+                            <li>{firstName}, {lastName}</li>
+                            <li>{optinDate}, {phone}, {link}</li>
+                        </ul>
+                        <p>Supported substitutions in the URL:</p>
+                        <ul>
+                            <li>{MTA}, {listId}</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group debug-border">
+                            <label for="mms-two">
+                                <input type="checkbox" id="mms-two"> MMS
+                            </label>
+                            <label for="split-test-two">
+                                <input type="checkbox" id="split-test-two"> A/B Split test
+                            </label>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="template">Create message A</label>
+                        <select id="template">
+                            <option value="library">Template library</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <textarea placeholder="Lorem Ipsum: Hi, {first_name}! Check out our new offer here {link}. Reply STOP to cancel"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">URL <i style="font-weight: 300;">This will be shortened to {link}</i></label>
+                        <input type="text" id="url" placeholder="https://apple.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">Segments:</span>  2 <i class="fa fa-question-circle tooltip-icon debug-border" title="If a message exceeds 160 characters, it will count as two messages and use the corresponding number of credits."></i></label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">SMS credits available:</span>  9,999</label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">MMS Credits available:</span>  3,333</label>
+                    </div>
+                    <button class="button save">Save to library</button>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="preview">Preview A</label>
+                        <div class="mms-campaign">
+                          <label for="image-upload" class="button upload-button debug-border"><i class="fa fa-upload"></i> Upload Image</label>
+                          <input type="file" id="image-upload" style="background: #f8f8b0;  pointer-events: none;"   accept="image/*" style="display: none;">
+                          <div class="image-preview">
+                              <p>No image uploaded</p>
+                              <img id="uploaded-image" src="#" alt="Uploaded Image" style="display: none; max-width: 100%; border-radius: 8px;">
+                          </div>
+                        </div>
+                        <textarea id="preview" style="display: none; max-width: 100%; border-radius: 8px;" disabled>Lorem Ipsum</textarea>
+                        <div style="display:flex;">
+                          <p><span style="color:red;">165 Chars</span> / -5 remaining</p>
+                          <p># of msg credits: 2</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="form-group">
+                          <p class="small-note">link results to this <input type="text" disabled value="https://short.url/sfsde3sd"></p>
+                          <p class="small-note"><i style="font-weight: 300;">we add 8 char hash to track clicks</i></p>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="columns b-campaign">
+                <!-- Column 1 -->
+                <div class="column">
+
+                </div>
+
+                <!-- Column 2 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="template">Create message B</label>
+                        <select id="template">
+                            <option value="library">Template library</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <textarea placeholder="Lorem Ipsum: Hi, {first_name}! Check out our new offer here {link}. Reply STOP to cancel"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">URL <i style="font-weight: 300;">This will be shortened to {link}</i></label>
+                        <input type="text" id="url" placeholder="https://apple.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">Segments:</span>  2 <i class="fa fa-question-circle tooltip-icon debug-border" title="If a message exceeds 160 characters, it will count as two messages and use the corresponding number of credits."></i></label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">SMS credits available:</span>  9,999</label>
+                      <label for="send-limit-total"><span style ="background: #d4d4d4; padding: 2px 5px;  border-radius: 5px">MMS Credits available:</span>  3,333</label>
+                    </div>
+                    <button class="button save">Save to library</button>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="column">
+                    <div class="form-group">
+                        <label for="preview">Preview B</label>
+                        <div class="mms-campaign">
+                          <label for="image-upload" class="button upload-button debug-border"><i class="fa fa-upload"></i> Upload Image</label>
+                          <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                          <div class="image-preview">
+                              <p>No image uploaded</p>
+                              <img id="uploaded-image" src="#" alt="Uploaded Image" >
+                          </div>
+                        </div>
+                        <textarea id="preview" style="background: #f8f8b0;  pointer-events: none;"   disabled>Lorem Ipsum</textarea>
+                        <div style="display:flex;">
+                          <p><span style="color:red;">165 Chars</span> / -5 remaining</p>
+                          <p># of msg credits: 2</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="form-group">
+                          <p class="small-note">link results to this <input type="text" disabled value="https://short.url/sfsde3sd"></p>
+                          <p class="small-note"><i style="font-weight: 300;">we add 8 char hash to track clicks</i></p>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="columns">
+                <!-- Column 1 -->
+                <div class="column">
+                </div>
+                <div class="column" style="align-items: center;">
+
+                    <div class="button-group">
+                         <div style=" width: 20px;">
+                          <i class="fa fa-question-circle tooltip-icon debug-border"  style="margin-right: -20px;" title="Here you can create drip campaigns and create as many follow up messages as you need."></i>
+                         </div>
+                          <button class="button add"><i class="fa fa-plus"></i> Add message </button>
+                          <button class="button archive removemsg debug-border"><i class="fa fa-times"></i> Delete message</button>
+                    </div>
+                </div>
+                <div class="column">
+                </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+    </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const addButton = document.querySelector('.button.add');
+      const removeButton = document.querySelector('.button.removemsg');
+      const newMessageDiv = document.querySelector('.new--message');
+
+      // Show the div when the "Add" button is clicked
+      addButton.addEventListener('click', () => {
+          if (newMessageDiv) {
+              newMessageDiv.style.display = 'block'; // Show the div
+          }
+      });
+
+      // Hide the div when the "Remove" button is clicked
+      removeButton.addEventListener('click', () => {
+          if (newMessageDiv) {
+              newMessageDiv.style.display = 'none'; // Hide the div
+          }
+      });
+    });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Function to handle MMS and Split Test toggles within a specific container
+        const setupToggleLogic = (container) => {
+            const mmsCheckbox = container.querySelector('[id^="mms"]'); // Match MMS checkbox
+            const splitTestCheckbox = container.querySelector('[id^="split-test"]'); // Match Split Test checkbox
+            const mmsCampaign = container.querySelector('.mms-campaign'); // Target MMS campaign
+            const bCampaign = container.querySelector('.b-campaign'); // Target Split Test campaign
+
+            // MMS toggle
+            if (mmsCheckbox && mmsCampaign) {
+                mmsCheckbox.addEventListener('change', () => {
+                    mmsCampaign.style.display = mmsCheckbox.checked ? 'grid' : 'none';
+                });
+
+                // Initialize visibility based on the checkbox state
+                mmsCampaign.style.display = mmsCheckbox.checked ? 'grid' : 'none';
+            }
+
+            // Split Test toggle
+            if (splitTestCheckbox && bCampaign) {
+                splitTestCheckbox.addEventListener('change', () => {
+                    bCampaign.style.display = splitTestCheckbox.checked ? 'grid' : 'none';
+                });
+
+                // Initialize visibility based on the checkbox state
+                bCampaign.style.display = splitTestCheckbox.checked ? 'grid' : 'none';
+            }
+        };
+
+        // Apply logic for all `.message-one` and `.new--message` containers
+        document.querySelectorAll('.message-one, .new--message').forEach((container) => {
+            setupToggleLogic(container);
+        });
+
+        // Handle image upload for each `.mms-campaign` container
+        document.querySelectorAll('input[type="file"]').forEach((uploadInput) => {
+            const parentContainer = uploadInput.closest('.mms-campaign'); // Find closest parent container
+            if (!parentContainer) return;
+
+            const imagePreview = parentContainer.querySelector('img');
+            const placeholderText = parentContainer.querySelector('p');
+
+            uploadInput.addEventListener('change', () => {
+                const file = uploadInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        if (imagePreview) {
+                            imagePreview.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                        }
+                        if (placeholderText) {
+                            placeholderText.style.display = 'none';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Select all upload inputs and handle each dynamically
+      const uploadInputs = document.querySelectorAll('input[type="file"]');
+
+      uploadInputs.forEach((uploadInput) => {
+          const parentContainer = uploadInput.closest('.mms-campaign'); // Finds the closest parent container
+          const imagePreview = parentContainer.querySelector('.image-preview img'); // Image element
+          const placeholderText = parentContainer.querySelector('.image-preview p'); // Placeholder text
+
+          uploadInput.addEventListener('change', () => {
+              const file = uploadInput.files[0];
+              if (file) {
+                  const reader = new FileReader();
+
+                  reader.onload = (e) => {
+                      if (imagePreview) {
+                          imagePreview.src = e.target.result;
+                          imagePreview.style.display = 'block'; // Show the image
+                      }
+                      if (placeholderText) {
+                          placeholderText.style.display = 'none'; // Hide placeholder text
+                      }
+                  };
+
+                  reader.readAsDataURL(file); // Convert file to a data URL
+              }
+          });
+      });
+    });
+    </script>
+
+    </main>
+    <footer class="footer">
+        <a href="#" style="text-decoration: none; color: var(--blue-600);">Privacy Policy</a> | <a href="#" style="text-decoration: none; color: var(--blue-600);">Terms & Conditions</a>
+    </footer>
+</body>
+</html>
