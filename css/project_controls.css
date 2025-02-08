@@ -1,0 +1,46 @@
+/* add styles for project controls here */
+.sms-character-count {
+    margin-left: 1rem;
+}
+
+.sms-combined {
+    width: 100%;
+    display: block;
+}
+
+.sms-text-box {
+    width: 50%;
+    display: inline-flex;
+}
+
+.sms-echo-box {
+    background-color: antiquewhite;
+    color: black;
+}
+
+.sms-echo-box-b {
+    background-color: lightskyblue;
+    color: black;
+}
+
+.subscriber-file-uploader-progress {
+    padding: 0.5rem;
+    font-style: italic;
+}
+
+.subscriber-file-uploader-field-mapping-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.subscriber-file-uploader-field-mapping-preview-cell-container {
+    padding: 0.5rem;
+    flex: 1 1 0%;
+}
+
+.subscriber-file-uploader-field-mapping-preview-cell {
+    height: 2.5rem;
+    font-family: monospace;
+    background-color: var(--gray-300);
+}
